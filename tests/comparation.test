@@ -8,11 +8,15 @@ EXAMPLE2b = '$testdir/patterns/example2b.pdf'
 
 COMMAND = '$basedir/lib/pdfcompare.py'
 
+desc='Without params, it must complain'
+t = Test('{0}'.format(COMMAND), desc=desc, expected=1)
+t.post += StdOutContains("Format")
+
 desc='One file is equal to itself.'
-t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE1a), expected=0, desc=desc)
+t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE1a), desc=desc, expected=0)
 
 desc='One file is not equal to a different one'
-t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE2a), expected=2, desc=desc)
+t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE2a), desc=desc, expected=2)
 
 desc='Similar files are identified.'
-t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE1b), expected=0, desc=desc)
+t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE1b), desc=desc, expected=0)
