@@ -20,3 +20,6 @@ t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE2a), desc=desc, expecte
 
 desc='Similar files are identified.'
 t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE1b), desc=desc, expected=0)
+
+desc='Similar files are identified again.'
+t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE2a, EXAMPLE2b), desc=desc, expected=0)
