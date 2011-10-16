@@ -13,3 +13,6 @@ t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE1a), expected=0, desc=d
 
 desc='One file is not equal to a different one'
 t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE2a), expected=2, desc=desc)
+
+desc='Similar files are identified.'
+t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE1b), expected=0, desc=desc)
