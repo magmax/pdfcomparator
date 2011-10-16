@@ -1,0 +1,11 @@
+#!/usr/bin/python
+# -*- coding:utf-8; tab-width:4; mode:python -*-
+
+EXAMPLE1a = '$testdir/patterns/example1a.pdf'
+EXAMPLE1b = '$testdir/patterns/example1b.pdf'
+EXAMPLE2a = '$testdir/patterns/example2a.pdf'
+EXAMPLE2b = '$testdir/patterns/example2b.pdf'
+
+COMMAND = '$basedir/lib/pdfcompare.py'
+
+t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE1a), expected=0)
