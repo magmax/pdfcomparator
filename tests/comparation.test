@@ -5,6 +5,10 @@ EXAMPLE1a = '$testdir/patterns/example1a.pdf'
 EXAMPLE1b = '$testdir/patterns/example1b.pdf'
 EXAMPLE2a = '$testdir/patterns/example2a.pdf'
 EXAMPLE2b = '$testdir/patterns/example2b.pdf'
+EXAMPLE3a = '$testdir/patterns/example3a.pdf'
+EXAMPLE3b = '$testdir/patterns/example3b.pdf'
+EXAMPLE4a = '$testdir/patterns/example4a.pdf'
+EXAMPLE4b = '$testdir/patterns/example4b.pdf'
 
 COMMAND = '$basedir/lib/pdfcompare.py'
 
@@ -17,9 +21,26 @@ t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE1a), desc=desc, expecte
 
 desc='One file is not equal to a different one'
 t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE2a), desc=desc, expected=2)
+t.post += StdOutContains("Different number of pages (1 vs 4)")
 
 desc='Similar files are identified.'
 t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE1b), desc=desc, expected=0)
 
-desc='Similar files are identified again.'
+desc='Similar files are identified with some pages.'
 t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE2a, EXAMPLE2b), desc=desc, expected=0)
+
+desc='Different documents with one page'
+t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE3a), desc=desc, expected=2)
+t.post += StdOutContains('Page 1 is different')
+
+desc='Different documents with one page is conmutative'
+t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE3a, EXAMPLE1a), desc=desc, expected=2)
+t.post += StdOutContains('Page 1 is different')
+
+desc='Different documents with some pages'
+t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE2a, EXAMPLE4a), desc=desc, expected=2)
+t.post += StdOutContains('Page 4 is different')
+
+desc='First file does not exist'
+t = Test('{0} {1} {2}'.format(COMMAND, "false", EXAMPLE4a), desc=desc, expected=2)
+t.post += StdErrContains("Couldn't open file")
