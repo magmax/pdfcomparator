@@ -1,2 +1,3 @@
-pypoppler
+PyGObject
 pycairo
+pypoppler
