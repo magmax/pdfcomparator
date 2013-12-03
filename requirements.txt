@@ -1,3 +1,0 @@
-PyGObject
-pycairo
-pypoppler
