@@ -1,3 +1,3 @@
 #!/bin/bash
 
-apt-get install python-poppler python-cairo
+sudo apt-get install python-poppler python-cairo
