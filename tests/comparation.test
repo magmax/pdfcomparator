@@ -10,7 +10,7 @@ EXAMPLE3b = '$testdir/patterns/example3b.pdf'
 EXAMPLE4a = '$testdir/patterns/example4a.pdf'
 EXAMPLE4b = '$testdir/patterns/example4b.pdf'
 
-COMMAND = '$basedir/lib/pdfcompare.py'
+COMMAND = '$basedir/pdfcomparator/pdfcompare.py'
 
 desc='Without params, it must complain'
 t = Test('{0}'.format(COMMAND), desc=desc, expected=1)
