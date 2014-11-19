@@ -34,7 +34,7 @@ class ComparitionTest(unittest.TestCase):
 
     def test_compared_to_different(self):
         self.sut = pexpect.spawn(COMMAND % (EXAMPLE1a, EXAMPLE2a))
-        self.sut.expect("Different number of pages", timeout=5)
+        self.sut.expect("Different number of pages", timeout=2)
         assert self.sut.wait() == 2
 
     def test_compared_to_similar(self):
@@ -44,4 +44,20 @@ class ComparitionTest(unittest.TestCase):
     def test_compared_to_similar_with_several_pages(self):
         self.sut = pexpect.spawn(COMMAND % (EXAMPLE2a, EXAMPLE2b))
         assert self.sut.wait() == 0
+
+    def test_different_1_page_docs(self):
+        self.sut = pexpect.spawn(COMMAND % (EXAMPLE1a, EXAMPLE3a))
+        self.sut.expect("Page 1 is different", timeout=2)
+        assert self.sut.wait() == 2
+
+    def test_different_1_page_docs_conmutative(self):
+        self.sut = pexpect.spawn(COMMAND % (EXAMPLE3a, EXAMPLE1a))
+        self.sut.expect("Page 1 is different", timeout=2)
+        assert self.sut.wait() == 2
+
+    def test_different_multipage_docs(self):
+        self.sut = pexpect.spawn(COMMAND % (EXAMPLE2a, EXAMPLE4a))
+        self.sut.expect("Page 4 is different", timeout=2)
+        assert self.sut.wait() == 2
+
 
