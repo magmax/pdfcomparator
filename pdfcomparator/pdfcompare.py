@@ -16,11 +16,35 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import sys
 import argparse
 import poppler
 import cairo
+
+
+class PDFCompareError(Exception):
+    pass
+
+
+class DifferentNumberOfPages(PDFCompareError):
+    def __init__(self, pages_a, pages_b, *args, **kwargs):
+        super(DifferentNumberOfPages, self).__init__(*args, **kwargs)
+        self.pages_a = pages_a
+        self.pages_b = pages_b
+
+    def __str__(self):
+        return 'Different number of pages ({0} vs {1})'.format(self.pages_a, self.pages_b)
+
+
+class DifferentPage(PDFCompareError):
+    def __init__(self, page, *args, **kwargs):
+        super(DifferentPage, self).__init__(*args, **kwargs)
+        self.page = page
+
+    def __str__(self):
+        return 'Page {0} is different.'.format(self.page)
 
 
 class ComparePDF(object):
@@ -30,7 +54,11 @@ class ComparePDF(object):
 
     def compare(self):
         try:
-            return self._try_compare()
+            self._try_compare()
+            return True
+        except PDFCompareError as e:
+            print(e)
+            return False
         except:
             return False
 
@@ -38,34 +66,23 @@ class ComparePDF(object):
         doc_a = self._load_file(self.file_a)
         doc_b = self._load_file(self.file_b)
 
-        if not self._have_same_page_number(doc_a, doc_b):
-            return False
+        self._assert_same_page_number(doc_a, doc_b)
+        self._assert_all_pages_are_equal(doc_a, doc_b)
 
-        if not self._all_pages_are_equal(doc_a, doc_b):
-            return False
-
-        return True
-
-    def _have_same_page_number(self, doc_a, doc_b):
+    def _assert_same_page_number(self, doc_a, doc_b):
         pages_a = doc_a.get_n_pages()
         pages_b = doc_b.get_n_pages()
 
-        if pages_a is pages_b:
-            return True
+        if pages_a is not pages_b:
+            raise DifferentNumberOfPages(pages_a, pages_b)
 
-        print 'Different number of pages ({0} vs {1})'.format(pages_a, pages_b)
-
-        return False
-
-    def _all_pages_are_equal(self, doc_a, doc_b):
+    def _assert_all_pages_are_equal(self, doc_a, doc_b):
         for i in xrange(doc_a.get_n_pages()):
             pagea0 = doc_a.get_page(i)
             pageb0 = doc_b.get_page(i)
 
             if self._render(pagea0) != self._render(pageb0):
-                print 'Page {0} is different.'.format(i+1)
-                return False
-        return True
+                raise DifferentPage(i+1)
 
     def _load_file(self, filename):
         path = os.path.realpath(filename)
