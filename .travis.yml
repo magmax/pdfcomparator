@@ -4,4 +4,4 @@ python:
 # command to install dependencies
 install: "./install.sh"
 # command to run tests
-script: nosetests --with-freshen
+script: python runtests.py tests
