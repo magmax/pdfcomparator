@@ -20,14 +20,14 @@ class PyTest(Command):
 
     def run(self):
         import sys,subprocess
-        errno = subprocess.call([sys.executable, 'runtests.py'])
+        errno = subprocess.call([sys.executable, 'runtests.py', 'tests'])
         raise SystemExit(errno)
 
 
 setup(name=APP.name,
       version=APP.version_str,
       description=APP.description,
-#      long_description=read_description(),
+      long_description=read_description(),
       cmdclass = {'test': PyTest},
       classifiers=[
           'Development Status :: 5 - Production/Stable',

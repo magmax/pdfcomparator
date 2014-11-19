@@ -11,7 +11,7 @@ Installation
 
 It requires some libraries. In Debian or Ubuntu, you can install them by apt::
 
-    # apt-get install libpoppler-glib-dev python-gtk2 python-gobject-2-dev python-cairo-dev python-gobject-dev
+    # apt-get install libpoppler-glib-dev python-gtk2 python-cairo-dev python-gobject-dev
 
 Then you can install it as usual::
 
