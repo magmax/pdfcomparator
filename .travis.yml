@@ -12,4 +12,5 @@ install:
   - apt-get install python-gobject-dev python-cairo-dev
 
 script:
+  - flake8 pdfcomparator tests
   - python setup.py test

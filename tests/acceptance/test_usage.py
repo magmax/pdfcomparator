@@ -59,5 +59,3 @@ class ComparitionTest(unittest.TestCase):
         self.sut = pexpect.spawn(COMMAND % (EXAMPLE2a, EXAMPLE4a))
         self.sut.expect("Page 4 is different", timeout=2)
         assert self.sut.wait() == 2
-
-
