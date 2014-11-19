@@ -12,12 +12,6 @@ EXAMPLE4b = '$testdir/patterns/example4b.pdf'
 
 COMMAND = '$basedir/pdfcomparator/pdfcompare.py'
 
-desc='Similar files are identified.'
-t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE1b), desc=desc, expected=0)
-
-desc='Similar files are identified with some pages.'
-t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE2a, EXAMPLE2b), desc=desc, expected=0)
-
 desc='Different documents with one page'
 t = Test('{0} {1} {2}'.format(COMMAND, EXAMPLE1a, EXAMPLE3a), desc=desc, expected=2)
 t.post += StdOutContains('Page 1 is different')

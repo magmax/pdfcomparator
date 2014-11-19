@@ -36,3 +36,12 @@ class ComparitionTest(unittest.TestCase):
         self.sut = pexpect.spawn(COMMAND % (EXAMPLE1a, EXAMPLE2a))
         self.sut.expect("Different number of pages", timeout=5)
         assert self.sut.wait() == 2
+
+    def test_compared_to_similar(self):
+        self.sut = pexpect.spawn(COMMAND % (EXAMPLE1a, EXAMPLE1b))
+        assert self.sut.wait() == 0
+
+    def test_compared_to_similar_with_several_pages(self):
+        self.sut = pexpect.spawn(COMMAND % (EXAMPLE2a, EXAMPLE2b))
+        assert self.sut.wait() == 0
+
