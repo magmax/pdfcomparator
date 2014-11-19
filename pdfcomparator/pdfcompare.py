@@ -19,8 +19,11 @@
 from __future__ import print_function
 import os
 import argparse
+import logging
 import poppler
 import cairo
+
+logger = logging.getLogger(__name__)
 
 
 class PDFCompareError(Exception):
@@ -54,15 +57,15 @@ class ComparePDF(object):
 
     def compare(self):
         try:
-            self._try_compare()
+            self._safe_compare()
+            logger.debug('Files are equal')
             return True
         except PDFCompareError as e:
             print(e)
             return False
-        except:
-            return False
 
-    def _try_compare(self):
+    def _safe_compare(self):
+        logger.debug('Comparing %s with %s', self.file_a, self.file_b)
         doc_a = self._load_file(self.file_a)
         doc_b = self._load_file(self.file_b)
 
@@ -73,16 +76,20 @@ class ComparePDF(object):
         pages_a = doc_a.get_n_pages()
         pages_b = doc_b.get_n_pages()
 
+        logger.debug('Pages: %s vs %s', pages_a, pages_b)
+
         if pages_a is not pages_b:
             raise DifferentNumberOfPages(pages_a, pages_b)
 
     def _assert_all_pages_are_equal(self, doc_a, doc_b):
         for i in xrange(doc_a.get_n_pages()):
+            page = i + 1
+            logger.debug('Comparing page %s', page)
             pagea0 = doc_a.get_page(i)
             pageb0 = doc_b.get_page(i)
 
             if self._render(pagea0) != self._render(pageb0):
-                raise DifferentPage(i+1)
+                raise DifferentPage(page)
 
     def _load_file(self, filename):
         path = os.path.realpath(filename)
@@ -98,12 +105,29 @@ class ComparePDF(object):
         return surface.get_data()
 
 
+def logging_setup(verbose):
+    if verbose:
+        logging.basicConfig(
+            format='%(asctime)-15s %(levelname)-4s %(message)s',
+        )
+        logger.setLevel(logging.DEBUG)
+    else:
+        logging.basicConfig(
+            format='%(message)s',
+        )
+        logger.setLevel(logging.INFO)
+
+
 def main():
     parser = argparse.ArgumentParser(description='Compares two PDF files.')
     parser.add_argument('file', nargs=2,
                         help='PDF files to be compared')
+    parser.add_argument('-v', '--verbose', default=False, action='store_true',
+                        help='Verbose mode')
 
     args = parser.parse_args()
+
+    logging_setup(args.verbose)
 
     for f in args.file:
         if not os.path.exists(f):
