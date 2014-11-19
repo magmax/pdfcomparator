@@ -18,9 +18,11 @@
 
 import os
 import sys
+import argparse
 import poppler
 import cairo
-import io
+
+
 
 class ComparePDF(object):
     def __init__(self, file_a, file_b):
@@ -79,15 +81,18 @@ class ComparePDF(object):
         return surface.get_data()
 
 
-def print_help():
-    print "Format: pdfcompare.py file1 file2"
-    exit(1)
-
 def main():
-    if len (sys.argv) < 3:
-        print_help()
+    parser = argparse.ArgumentParser(description='Compares two PDF files.')
+    parser.add_argument('file', nargs=2,
+                        help='PDF files to be compared')
 
-    c = ComparePDF(sys.argv[1], sys.argv[2])
+    args = parser.parse_args()
+
+    for f in args.file:
+        if not os.path.exists(f):
+            parser.error('File %s does not exist' % f)
+
+    c = ComparePDF(*args.file)
     if c.compare():
         exit(0)
     else:

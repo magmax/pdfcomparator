@@ -31,6 +31,25 @@ If they are equal, it will print nothing. If they are different, it will print t
 Enjoy it!
 
 
+Contribute
+----------
+
+If you want to contribute, please, create a VirtualEnv environment::
+
+    $ virtualenv venv --system-site-packages
+    $ . venv/bin/activate
+
+It is important to use the system packages in order to find the python-gobject library.
+
+Now, you should be able to install the pdfcomparator package:
+
+    $ python setup.py develop
+
+And to test it:
+
+    $ python setup.py test
+
+
 .. |travis| image:: https://travis-ci.org/magmax/pdfcomparator.png
   :target: `Travis`_
   :alt: Travis results
