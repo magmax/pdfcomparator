@@ -35,7 +35,8 @@ class DifferentNumberOfPages(PDFCompareError):
         self.pages_b = pages_b
 
     def __str__(self):
-        return 'Different number of pages ({0} vs {1})'.format(self.pages_a, self.pages_b)
+        return 'Different number of pages ({0} vs {1})'.format(
+            self.pages_a, self.pages_b)
 
 
 class DifferentPage(PDFCompareError):
@@ -91,7 +92,8 @@ class ComparePDF(object):
 
     def _render(self, page):
         size = page.get_size()
-        surface = cairo.ImageSurface (cairo.FORMAT_ARGB32, int(size[0]), int(size[1]))
+        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32,
+                                     int(size[0]), int(size[1]))
         context = cairo.Context(surface)
         page.render(context)
         return surface.get_data()
@@ -109,10 +111,9 @@ def main():
             parser.error('File %s does not exist' % f)
 
     c = ComparePDF(*args.file)
-    if c.compare():
-        exit(0)
-    else:
-        exit(2)
+    rc = 0 if c.compare() else 2
+    exit(rc)
+
 
 if __name__ == '__main__':
         main()
