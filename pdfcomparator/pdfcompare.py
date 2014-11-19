@@ -23,7 +23,6 @@ import poppler
 import cairo
 
 
-
 class ComparePDF(object):
     def __init__(self, file_a, file_b):
         self.file_a = file_a
@@ -31,23 +30,23 @@ class ComparePDF(object):
 
     def compare(self):
         try:
-            return self.__try_compare()
+            return self._try_compare()
         except:
             return False
 
-    def __try_compare(self):
-        doc_a = self.__load_file(self.file_a)
-        doc_b = self.__load_file(self.file_b)
+    def _try_compare(self):
+        doc_a = self._load_file(self.file_a)
+        doc_b = self._load_file(self.file_b)
 
-        if not self.__have_same_page_number(doc_a, doc_b):
+        if not self._have_same_page_number(doc_a, doc_b):
             return False
 
-        if not self.__all_pages_are_equal(doc_a, doc_b):
+        if not self._all_pages_are_equal(doc_a, doc_b):
             return False
 
         return True
 
-    def __have_same_page_number(self, doc_a, doc_b):
+    def _have_same_page_number(self, doc_a, doc_b):
         pages_a = doc_a.get_n_pages()
         pages_b = doc_b.get_n_pages()
 
@@ -58,22 +57,22 @@ class ComparePDF(object):
 
         return False
 
-    def __all_pages_are_equal(self, doc_a, doc_b):
+    def _all_pages_are_equal(self, doc_a, doc_b):
         for i in xrange(doc_a.get_n_pages()):
             pagea0 = doc_a.get_page(i)
             pageb0 = doc_b.get_page(i)
 
-            if self.__render(pagea0) != self.__render(pageb0):
+            if self._render(pagea0) != self._render(pageb0):
                 print 'Page {0} is different.'.format(i+1)
                 return False
         return True
 
-    def __load_file(self, filename):
+    def _load_file(self, filename):
         path = os.path.realpath(filename)
         uri = "file://{0}".format(path)
         return poppler.document_new_from_file(uri, None)
 
-    def __render(self, page):
+    def _render(self, page):
         size = page.get_size()
         surface = cairo.ImageSurface (cairo.FORMAT_ARGB32, int(size[0]), int(size[1]))
         context = cairo.Context(surface)
