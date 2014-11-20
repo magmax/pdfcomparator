@@ -2,14 +2,12 @@ language: python
 
 python:
   - "2.7"
-  - "3.2"
-  - "3.3"
-  - "3.4"
-  - "pypy"
 
 install:
-  - apt-get install libpoppler-glib-dev python-gtk2
-  - apt-get install python-gobject-dev python-cairo-dev
+  - sudo apt-get install libpoppler-glib-dev python-gtk2
+  - sudo apt-get install python-gobject-dev python-cairo-dev
+  - python setup.py sdist
+  - pip install sdist/$(ls dist)
 
 script:
   - flake8 pdfcomparator tests
