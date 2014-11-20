@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+o# -*- coding: utf-8 -*-
 
 import subprocess
 from setuptools import setup, find_packages, Command
@@ -49,7 +49,7 @@ setup(name=APP.name,
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-#          'pygobject < 2.28.3',
+          'pygobject',
           'pypoppler',
           'pycairo == 1.8.8',
       ],
