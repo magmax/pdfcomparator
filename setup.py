@@ -1,4 +1,4 @@
-o# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import subprocess
 from setuptools import setup, find_packages, Command
