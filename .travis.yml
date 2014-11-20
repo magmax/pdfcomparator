@@ -7,7 +7,7 @@ install:
   - sudo apt-get install libpoppler-glib-dev python-gtk2
   - sudo apt-get install python-gobject-dev python-cairo-dev
   - python setup.py sdist
-  - pip install sdist/*.tgz
+  - pip install dist/*.tgz
 
 script:
   - flake8 pdfcomparator tests
