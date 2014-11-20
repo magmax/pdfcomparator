@@ -53,4 +53,12 @@ setup(name=APP.name,
           'pypoppler',
           'pycairo == 1.8.8',
       ],
+      tests_require=[
+          'flake8 >= 2.2.3',
+          'pytest >= 2.6.3',
+          'pytest-cov >= 1.8.0',
+          'pexpect >= 3.3',
+          'wheel >= 0.24.0',
+          'python-coveralls >= 2.4.2',
+      ],
   )
