@@ -7,9 +7,9 @@ install:
   - sudo apt-get install gcc
   - sudo apt-get install libpoppler-glib-dev python-gtk2
   - sudo apt-get install python-gobject-dev python-cairo-dev
-  - sudo apt-get install python-gobject python-gobject-2
-  - python setup.py sdist
+  - pip install pygobject --allow-unverified pygobject --allow-external pygobject
   - pip install pycairo==1.8.8 --allow-unverified pycairo --allow-external pycairo
+  - python setup.py sdist
   - pip install dist/*
   - pip install -r requirements-dev.txt
 
