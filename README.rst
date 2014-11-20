@@ -11,7 +11,7 @@ Installation
 
 It requires some libraries. In Debian or Ubuntu, you can install them by apt::
 
-    # apt-get install libpoppler-glib-dev python-gtk2 python-cairo-dev python-gobject-dev
+    # apt-get install libpoppler-glib-dev python-gtk2 python-cairo-dev python-gobject-dev python-gobject
 
 Ensure you have an actual version of `gcc`, because `pycairo` will require it (it adds the option `-fstack-protector-strong` to the compilation options). This library is hard to install, so here you have the command line I use:
 
