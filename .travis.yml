@@ -10,6 +10,7 @@ install:
   - python setup.py sdist
   - pip install pycairo==1.8.8 --allow-unverified pycairo --allow-external pycairo
   - pip install dist/*
+  - pip install -r requirements-dev.txt
 
 script:
   - flake8 pdfcomparator tests
