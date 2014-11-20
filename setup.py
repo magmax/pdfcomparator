@@ -49,7 +49,7 @@ setup(name=APP.name,
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'pygobject',
+#          'pygobject',
           'pypoppler',
           'pycairo == 1.8.8',
       ],
