@@ -8,7 +8,7 @@ install:
   - sudo apt-get install libpoppler-glib-dev python-gtk2
   - sudo apt-get install python-gobject-dev python-cairo-dev
   - python setup.py sdist
-  - pip install pycairo==1.8.8
+  - pip install pycairo==1.8.8 --allow-unverified pycairo --allow-external pycairo
   - pip install dist/*
 
 script:
