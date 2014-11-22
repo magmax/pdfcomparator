@@ -20,7 +20,7 @@ class PyTest(Command):
 
     def run(self):
         import sys,subprocess
-        errno = subprocess.call([sys.executable, 'runtests.py', 'tests'])
+        errno = subprocess.call([sys.executable, 'runtests.py', '--cov=pdfcomparator', 'tests'])
         raise SystemExit(errno)
 
 
