@@ -59,3 +59,23 @@ class ComparitionTest(unittest.TestCase):
         self.sut = pexpect.spawn(COMMAND % (EXAMPLE2a, EXAMPLE4a))
         self.sut.expect("Page 4 is different", timeout=2)
         assert self.sut.wait() == 2
+
+
+class VerbosityTest(unittest.TestCase):
+    def test_adding_verbosity(self):
+        command = COMMAND + ' --verbose'
+        self.sut = pexpect.spawn(command % (EXAMPLE1a, EXAMPLE1a))
+        self.sut.expect("DEBU", timeout=2)
+        assert self.sut.wait() == 0
+
+
+class NotFullyEqualTest(unittest.TestCase):
+    def test_one_page_similar(self):
+        command = COMMAND + ' --ratio=%s'
+        self.sut = pexpect.spawn(command % (EXAMPLE1a, EXAMPLE3a, 0.9))
+        assert self.sut.wait() == 0
+
+    def test_one_page_similar_precise(self):
+        command = COMMAND + ' --ratio=%s --precise'
+        self.sut = pexpect.spawn(command % (EXAMPLE1a, EXAMPLE3a, 0.9))
+        assert self.sut.wait() == 0
