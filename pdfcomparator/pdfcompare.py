@@ -20,6 +20,7 @@ from __future__ import print_function
 import os
 import argparse
 import logging
+import difflib
 import poppler
 import cairo
 
@@ -51,14 +52,16 @@ class DifferentPage(PDFCompareError):
 
 
 class ComparePDF(object):
-    def __init__(self, file_a, file_b):
+    def __init__(self, file_a, file_b, ratio=1, precise=False):
         self.file_a = file_a
         self.file_b = file_b
+        self.ratio = ratio
+        self.precise = precise
 
     def compare(self):
         try:
             self._safe_compare()
-            logger.debug('Files are equal')
+            logger.debug('Files are similar')
             return True
         except PDFCompareError as e:
             print(e)
@@ -85,11 +88,26 @@ class ComparePDF(object):
         for i in xrange(doc_a.get_n_pages()):
             page = i + 1
             logger.debug('Comparing page %s', page)
-            pagea0 = doc_a.get_page(i)
-            pageb0 = doc_b.get_page(i)
+            page_a = self._render(doc_a.get_page(i))
+            page_b = self._render(doc_b.get_page(i))
 
-            if self._render(pagea0) != self._render(pageb0):
+            if page_a == page_b:
+                logger.debug('Pages are equal')
+                continue
+            if self.ratio == 1:
                 raise DifferentPage(page)
+
+            logger.debug('Pages are not equal. Calculating similarity...')
+            sm = difflib.SequenceMatcher(None, page_a, page_b)
+
+            algoritms = [('aprox', sm.real_quick_ratio), ('quick', sm.quick_ratio)]
+            if self.precise:
+                algoritms.append(('precise', sm.ratio))
+            for name, algorithm in algoritms:
+                ratio = algorithm()
+                logger.debug('Similarity of %s with algoritm %s, and %s is tolerable.', ratio, name, self.ratio)
+                if self.ratio < ratio:
+                    raise DifferentPage(page)
 
     def _load_file(self, filename):
         path = os.path.realpath(filename)
@@ -124,6 +142,10 @@ def main():
                         help='PDF files to be compared')
     parser.add_argument('-v', '--verbose', default=False, action='store_true',
                         help='Verbose mode')
+    parser.add_argument('-r', '--ratio', default=1,
+                        help='Allowed difference ratio. 1: exactly equal; 0: any matches')
+    parser.add_argument('-p', '--precise', default=False, action='store_true',
+                        help='More precise algorithm, but much slower')
 
     args = parser.parse_args()
 
@@ -133,7 +155,7 @@ def main():
         if not os.path.exists(f):
             parser.error('File %s does not exist' % f)
 
-    c = ComparePDF(*args.file)
+    c = ComparePDF(*args.file, ratio=args.ratio, precise=args.precise)
     rc = 0 if c.compare() else 2
     exit(rc)
 

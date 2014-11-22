@@ -32,6 +32,17 @@ It will compare the files under "pattern" and "current".
 
 If they are equal, it will print nothing. If they are different, it will print the first page that is different and the script will return 2.
 
+Similarity
+__________
+
+
+Usually, two pages are equal or not. But maybe you only requires a similarity percentage. So, you can use a percentaje. Usually, this makes the comparision slower.
+
+So, it will use different algoritms to check the upper similarity ratio. When any of them fails, the whole comparision fails.
+
+You can enable the precise algoritm by using the option `--precise` and you can set the similarity ratio with `--ratio=0.8`, using any number between 0 and 1.
+
+
 Enjoy it!
 
 
