@@ -100,12 +100,14 @@ class ComparePDF(object):
             logger.debug('Pages are not equal. Calculating similarity...')
             sm = difflib.SequenceMatcher(None, page_a, page_b)
 
-            algoritms = [('aprox', sm.real_quick_ratio), ('quick', sm.quick_ratio)]
+            algoritms = [('aprox', sm.real_quick_ratio),
+                         ('quick', sm.quick_ratio)]
             if self.precise:
                 algoritms.append(('precise', sm.ratio))
             for name, algorithm in algoritms:
                 ratio = algorithm()
-                logger.debug('Similarity of %s with algoritm %s, and %s is tolerable.', ratio, name, self.ratio)
+                logger.debug('Similarity of %s with algoritm %s,'
+                             ' and %s is tolerable.', ratio, name, self.ratio)
                 if self.ratio < ratio:
                     raise DifferentPage(page)
 
@@ -143,7 +145,8 @@ def main():
     parser.add_argument('-v', '--verbose', default=False, action='store_true',
                         help='Verbose mode')
     parser.add_argument('-r', '--ratio', default=1,
-                        help='Allowed difference ratio. 1: exactly equal; 0: any matches')
+                        help='Allowed difference ratio. 1:'
+                        ' exactly equal; 0: any matches')
     parser.add_argument('-p', '--precise', default=False, action='store_true',
                         help='More precise algorithm, but much slower')
 
