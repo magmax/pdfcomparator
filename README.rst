@@ -73,11 +73,11 @@ And to test it:
   :target: `Coveralls`_
   :alt: Coveralls results_
 
-.. |pip version| image:: https://pypip.in/v/pdfcomparator/badge.png
+.. |pip version| image:: https://img.shields.io/pypi/v/pdfcomparator.svg
     :target: https://pypi.python.org/pypi/pdfcomparator
     :alt: Latest PyPI version
 
-.. |pip downloads| image:: https://pypip.in/d/pdfcomparator/badge.png
+.. |pip downloads| image:: https://img.shields.io/pypi/dm/pdfcomparator.svg
     :target: https://pypi.python.org/pypi/pdfcomparator
     :alt: Number of PyPI downloads
 
