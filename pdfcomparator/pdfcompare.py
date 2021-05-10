@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding:utf-8; tab-width:4; mode:python -*-
 
 # Copyright Miguel Angel Garcia <miguelangel.garcia@gmail.com>
@@ -22,7 +22,6 @@ import argparse
 import logging
 import difflib
 import poppler
-import cairo
 
 logger = logging.getLogger(__name__)
 
@@ -76,8 +75,8 @@ class ComparePDF(object):
         self._assert_all_pages_are_equal(doc_a, doc_b)
 
     def _assert_same_page_number(self, doc_a, doc_b):
-        pages_a = doc_a.get_n_pages()
-        pages_b = doc_b.get_n_pages()
+        pages_a = doc_a.pages
+        pages_b = doc_b.pages
 
         logger.debug('Pages: %s vs %s', pages_a, pages_b)
 
@@ -85,11 +84,11 @@ class ComparePDF(object):
             raise DifferentNumberOfPages(pages_a, pages_b)
 
     def _assert_all_pages_are_equal(self, doc_a, doc_b):
-        for i in xrange(doc_a.get_n_pages()):
+        for i in range(doc_a.pages):
             page = i + 1
             logger.debug('Comparing page %s', page)
-            page_a = self._render(doc_a.get_page(i))
-            page_b = self._render(doc_b.get_page(i))
+            page_a = self._render(doc_a.create_page(i))
+            page_b = self._render(doc_b.create_page(i))
 
             if page_a == page_b:
                 logger.debug('Pages are equal')
@@ -108,21 +107,16 @@ class ComparePDF(object):
                 ratio = algorithm()
                 logger.debug('Similarity of %s with algoritm %s,'
                              ' and %s is tolerable.', ratio, name, self.ratio)
-                if self.ratio < ratio:
+                if self.ratio > ratio:
                     raise DifferentPage(page)
 
     def _load_file(self, filename):
         path = os.path.realpath(filename)
-        uri = "file://{0}".format(path)
-        return poppler.document_new_from_file(uri, None)
+        return poppler.load_from_file(path, None)
 
     def _render(self, page):
-        size = page.get_size()
-        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32,
-                                     int(size[0]), int(size[1]))
-        context = cairo.Context(surface)
-        page.render(context)
-        return surface.get_data()
+        pageRenderer = poppler.PageRenderer()
+        return pageRenderer.render_page(page).data
 
 
 def logging_setup(verbose):
@@ -144,7 +138,7 @@ def main():
                         help='PDF files to be compared')
     parser.add_argument('-v', '--verbose', default=False, action='store_true',
                         help='Verbose mode')
-    parser.add_argument('-r', '--ratio', default=1,
+    parser.add_argument('-r', '--ratio', default=1, type=float,
                         help='Allowed difference ratio. 1:'
                         ' exactly equal; 0: any matches')
     parser.add_argument('-p', '--precise', default=False, action='store_true',

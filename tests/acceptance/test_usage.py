@@ -16,11 +16,11 @@ EXAMPLE4b = 'tests/patterns/example4b.pdf'
 class UsageTest(unittest.TestCase):
     def test_no_parameters(self):
         self.sut = pexpect.spawn(COMMAND % ('', ''))
-        self.sut.expect("error: too few arguments", timeout=1)
+        self.sut.expect("error: the following arguments are required", timeout=1)
 
     def test_just_one_parameter(self):
         self.sut = pexpect.spawn(COMMAND % ('foo', ''))
-        self.sut.expect("error: too few arguments", timeout=1)
+        self.sut.expect("error: the following arguments are required", timeout=1)
 
     def test_two_invalid_parameters(self):
         self.sut = pexpect.spawn(COMMAND % ('foo1', 'foo2'))
